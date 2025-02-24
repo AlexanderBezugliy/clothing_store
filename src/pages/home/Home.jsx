@@ -14,14 +14,11 @@ const Home = () => {
         <div>
             <Announcement />
             <Navbar />
-
-            <Slider />
-
-            <Categories />
             
+            <Slider />
+            <Categories />
             <NewArrivals />
             <Bestsellers />
-
             <Newsletter />
 
             <Footer />

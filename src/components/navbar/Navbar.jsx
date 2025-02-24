@@ -2,12 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { MdOutlineShoppingCart } from "react-icons/md";
-
+import { useSelector } from "react-redux";
 import './Navbar.css';
 
 
+
 const Navbar = () => {
-    return ( 
+    const cartItems = useSelector((state) => state.cartReducer.cartItems);
+
+    const totalItems = cartItems.length;
+
+    return (
         <nav className="navbar-container">
             <div className="navbar-wrapper">
                 <div className="navbar-left">
@@ -18,22 +23,30 @@ const Navbar = () => {
                     </div>
                 </div>
 
-                <div className="navbar-center">
-                    <h1 className="navbar-logo">Unnamed Shop<span>.</span></h1>
-                </div>
+                <Link to="/">
+                    <div className="navbar-center">
+                        <h1 className="navbar-logo">Unnamed Shop<span>.</span></h1>
+                    </div>
+                </Link>
 
                 <div className="navbar-right">
-                    <Link to="/register"><div className="navbar-menuItem">Register</div></Link>
-                    <div className="navbar-menuItem">Login</div>
-                    <div className="navbar-menuItem">
-                        <MdOutlineShoppingCart className='icon' />
-                        <span className="cart-badge"></span>
-                    </div>
+                    <Link to="/register">
+                        <div className="navbar-menuItem">Register</div>
+                    </Link>
+                    <Link to="/login">
+                        <div className="navbar-menuItem">Login</div>
+                    </Link>
+                    <Link to="/cart">
+                        <div className="navbar-menuItem">
+                            <MdOutlineShoppingCart className='icon' />
+                            {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+                        </div>
+                    </Link>
                 </div>
             </div>
 
         </nav>
     );
 }
- 
+
 export default Navbar;
