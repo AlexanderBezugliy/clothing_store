@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { allProducts } from "../../data";
 import './Navbar.css';
 
 
 
 const Navbar = () => {
-    const cartItems = useSelector((state) => state.cartReducer.cartItems);
+    const [searchText, setSearchText] = useState("");
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
+    const cartItems = useSelector((state) => state.cartReducer.cartItems);
     const totalItems = cartItems.length;
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchText(value);
+
+        const filtered = allProducts.filter((product) => product.title.toLowerCase().includes(value.toLowerCase()));
+        setFilteredProducts(filtered);
+    };
 
     return (
         <nav className="navbar-container">
@@ -18,8 +29,28 @@ const Navbar = () => {
                 <div className="navbar-left">
                     <span className="navbar-language">EN</span>
                     <div className="navbar-searchContainer">
-                        <input type="text" placeholder="Search" className="navbar-input" />
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            className="navbar-input"
+                            value={searchText}
+                            onChange={handleSearchChange}
+                        />
                         <IoSearch className='icon' />
+
+                        {searchText && filteredProducts.length > 0 && (
+                            <div className="search-dropdown">
+                                {filteredProducts.map((product) => (
+                                    <Link key={product.id} to={`/product/${product.id}`} className="search-item">
+                                        <img src={product.img} alt={product.title} className="search-item-img" />
+                                        <div>
+                                            <p>{product.title}</p>
+                                            <p>${product.price}</p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
 
